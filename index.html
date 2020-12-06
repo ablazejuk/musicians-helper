@@ -73,6 +73,22 @@
                                 </div>
                             </div>
                         </div>
+						<div class="form-group row">
+                            <div class="input-group">
+                                <label class="col-4 col-form-label" for="end">End <span class="text-muted">(seconds)</span></label>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10 s</button>
+                                    <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1 s</button>
+                                    <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-100 ms</button>
+                                </div>
+                                <input id="end" class="col-4 form-control" name="end" type="number" min="0" value="" step=".1" placeholder="16,2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+100 ms</button>
+                                    <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1 s</button>
+                                    <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10 s</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="col-6">
@@ -94,6 +110,7 @@
             //    after the API code downloads.
             var player;
             var videoChanged = false;
+			let duration = null;
             
             function getVideoIdFromURL(url) {
                 const urlParams = new URLSearchParams((new URL(url)).search);
@@ -125,8 +142,10 @@
                     var $duration = $('#duration');
                     
                     if (videoChanged) {
-                        $duration.val(player.getDuration());
+						duration = player.getDuration();
+                        $duration.val(duration);
                         $('#start').val(0);
+						$('#end').val(duration);
                         videoChanged = false;
                     }
                     
@@ -166,21 +185,28 @@
                     $this.removeClass('is-invalid');
                 } else {
                     var video_id = getVideoIdFromURL($this.val());
-                    
+					
                     if (video_id === null) {
                         reset();
                         $this.addClass('is-invalid');
                     } else {
                         $('#player').show();
                         $this.removeClass('is-invalid');
-                        player.loadVideoById(video_id);
+                        var status = player.loadVideoById(video_id);
                         videoChanged = true;
                     }
                 }
             });
             
             $('#start').change( function () {
-                applyChanges($(this).val(), $('#duration').val())
+				let start = $(this).val();
+				let duration_value = $('#duration').val();
+				
+				if (parseFloat(start) + parseFloat(duration_value) > duration) {
+					$('#duration').val(duration - start);
+				}
+				
+                applyChanges(start, duration_value)
             });
 
             $('#duration').change( function () {
