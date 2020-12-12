@@ -210,7 +210,14 @@
             });
 
             $('#duration').change( function () {
-                applyChanges($('#start').val(), $(this).val())
+				let new_duration = $(this).val();
+			
+				if (parseFloat(new_duration) > duration) {
+					new_duration = duration;
+					$(this).val(duration);
+				}
+			
+                applyChanges($('#start').val(), new_duration)
             });
             
             $('.sum').click(function () {
