@@ -199,25 +199,60 @@
             });
             
             $('#start').change( function () {
-				let start = $(this).val();
+                let $this = $(this);
+                let start = $this.val();
+                
+                if (start > duration) {
+                    start = duration;
+                    $this.val(duration);
+                }
+
 				let duration_value = $('#duration').val();
-				
+
 				if (parseFloat(start) + parseFloat(duration_value) > duration) {
-					$('#duration').val(duration - start);
+                    let new_duration = duration - start;
+                    $('#duration').val(duration - start);
+                    duration_value = new_duration;
 				}
-				
+                
+                $('#end').val(parseFloat(start) + parseFloat(duration_value));
+
                 applyChanges(start, duration_value)
             });
 
             $('#duration').change( function () {
-				let new_duration = $(this).val();
+                let new_duration = $(this).val();
+                let start = $('#start').val();
+                let new_end = parseFloat(start) + parseFloat(new_duration);
 			
-				if (parseFloat(new_duration) > duration) {
-					new_duration = duration;
+				if (new_end > duration) {
+                    new_end = duration;
+                    new_duration = new_end - start;
+					$(this).val(new_duration);
+				}
+            
+                $('#end').val(new_end);
+
+                applyChanges(start, new_duration)
+            });
+
+            $('#end').change( function () {
+				let new_end = $(this).val();
+			
+				if (parseFloat(new_end) > duration) {
+					new_end = duration;
 					$(this).val(duration);
 				}
-			
-                applyChanges($('#start').val(), new_duration)
+            
+                let new_duration = new_end - $('#start').val();
+                let $duration = $('#duration');
+
+                if (new_duration < 0) {
+                    new_duration = 0;
+                }
+
+                $duration.val(new_duration);
+                $duration.trigger('change');
             });
             
             $('.sum').click(function () {
