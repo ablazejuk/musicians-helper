@@ -1,5 +1,9 @@
 # Musicians' Helper
 
+## Production environment
+
+https://ablazejuk.github.io/musicians-helper/
+
 ## Run Locally
 
 ```
