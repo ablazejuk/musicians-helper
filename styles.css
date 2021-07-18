@@ -6,3 +6,19 @@
 .lyrics {
     font-family: monospace;
 }
+
+.current-node {
+    border-radius: 10px;
+    border-style: solid;
+    border-color: green;
+    color: green;
+    margin-bottom: 1rem;
+}
+
+.current-node > p {
+    margin-top: 1rem;
+}
+
+#chords p {
+    margin-left: 1em;
+}

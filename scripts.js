@@ -34,6 +34,7 @@ function onPlayerReady(event) {
 }
 
 var interval_id = null;
+let scroll_event_id = null;
 
 function registerScrollEvent() {
     node_index++;
@@ -47,9 +48,11 @@ function registerScrollEvent() {
     let current_time = Math.round(player.getCurrentTime() * 1000);
     let time_to_wait = (moment(start, 'HH:mm:ss.SSS').valueOf() - moment("00:00:00:000", 'HH:mm:ss.SSS').valueOf() - current_time);
 
-    setTimeout(function () {
-        console.log('node_index: ' + node_index)
+    scroll_event_id = setTimeout(function () {
+        $('#' + (node_index-1)).removeClass('current-node');
         $('#' + node_index).get(0).scrollIntoView();
+        $('#' + node_index).addClass('current-node');
+
         registerScrollEvent();
     }, time_to_wait);
 }
@@ -77,6 +80,8 @@ function onPlayerStateChange(event) {
             interval_id = setInterval(seekToStart, $duration.val() * 1000);
         }
     } else if (event.data === YT.PlayerState.PAUSED) {
+        $('#' + (node_index-1)).removeClass('current-node');
+        clearTimeout(scroll_event_id);
         clearInterval(interval_id);
         interval_id = null;
         seekToStart();
