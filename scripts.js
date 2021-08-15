@@ -1,14 +1,14 @@
 // 2. This code loads the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
+let tag = document.createElement('script');
 
 tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
+let firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
-var player;
-var videoChanged = false;
+let player;
+let videoChanged = false;
 let duration = null;
 let node_index = 0;
 let rows_dictionary = {};
@@ -33,14 +33,13 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
 }
 
-var interval_id = null;
+let interval_id = null;
 let scroll_event_id = null;
 
 function registerScrollEvent() {
     node_index++;
     
     if (!(node_index in rows_dictionary)) {
-        console.log('end of lyrics')
         return;
     }
     
@@ -66,7 +65,7 @@ function onPlayerStateChange(event) {
             registerScrollEvent()
         }
         
-        var $duration = $('#duration');
+        let $duration = $('#duration');
         
         if (videoChanged) {
             duration = player.getDuration();
@@ -80,8 +79,6 @@ function onPlayerStateChange(event) {
             interval_id = setInterval(seekToStart, $duration.val() * 1000);
         }
     } else if (event.data === YT.PlayerState.PAUSED) {
-        $('#' + (node_index-1)).removeClass('current-node');
-        clearTimeout(scroll_event_id);
         clearInterval(interval_id);
         interval_id = null;
         seekToStart();
@@ -89,13 +86,16 @@ function onPlayerStateChange(event) {
 }
 
 function seekToStart() {
+    clearTimeout(scroll_event_id);
+    scroll_event_id = null;
+    $('#' + (node_index-1)).removeClass('current-node');
     node_index = 0;
     player.seekTo(document.getElementById('start').value);
 }
 
-function applyChanges(start, duration) {
+function applyChanges(duration) {
     clearInterval(interval_id);
-    player.seekTo(start);
+    seekToStart();
     interval_id = setInterval(seekToStart, duration * 1000);
 }
 
@@ -154,14 +154,15 @@ function processFile(file_contents) {
 }
 
 $('#video-url').change( function () {
-    var $this = $(this);
+    let $this = $(this);
+
     clearInterval(interval_id);
     
     if ($this.val() === '') {
         reset();
         $this.removeClass('is-invalid');
     } else {
-        var video_id = getVideoIdFromURL($this.val());
+        let video_id = getVideoIdFromURL($this.val());
         
         if (video_id === null) {
             reset();
@@ -169,7 +170,7 @@ $('#video-url').change( function () {
         } else {
             $('#player').show();
             $this.removeClass('is-invalid');
-            var status = player.loadVideoById(video_id);
+            player.loadVideoById(video_id);
             videoChanged = true;
         }
     }
@@ -194,7 +195,7 @@ $('#start').change( function () {
     
     $('#end').val(parseFloat(start) + parseFloat(duration_value));
 
-    applyChanges(start, duration_value)
+    applyChanges(duration_value)
 });
 
 $('#duration').change( function () {
@@ -210,7 +211,7 @@ $('#duration').change( function () {
 
     $('#end').val(new_end);
 
-    applyChanges(start, new_duration)
+    applyChanges(new_duration)
 });
 
 $('#end').change( function () {
@@ -233,9 +234,9 @@ $('#end').change( function () {
 });
 
 $('.sum').click(function () {
-    var $this = $(this);
-    var $input = $this.parents('.input-group').find('input');
-    var old_value = $input.val();
+    let $this = $(this);
+    let $input = $this.parents('.input-group').find('input');
+    let old_value = $input.val();
     
     if (old_value === '') {
         old_value = 0;
@@ -246,15 +247,15 @@ $('.sum').click(function () {
 });
 
 $('.subtract').click(function () {
-    var $this = $(this);
-    var $input = $this.parents('.input-group').find('input');
-    var old_value = $input.val();
+    let $this = $(this);
+    let $input = $this.parents('.input-group').find('input');
+    let old_value = $input.val();
     
     if (old_value === '') {
         old_value = 0;
     }
     
-    var result = parseFloat(old_value) - parseFloat($this.data('amount'));
+    let result = parseFloat(old_value) - parseFloat($this.data('amount'));
     
     if (result < 0) {
         result = 0;
