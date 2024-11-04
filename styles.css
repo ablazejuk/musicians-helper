@@ -1,3 +1,4 @@
+/* Existing styles */
 .chords {
     font-family: monospace;
     white-space: pre;
@@ -21,4 +22,84 @@
 
 #chords p {
     margin-left: 1em;
+}
+
+/* New styles for responsiveness */
+.container-fluid {
+    padding: 1rem;
+}
+
+.text-center h2, .text-center h3, .text-center p {
+    font-size: 1rem;
+}
+
+.form-group .col-form-label {
+    font-weight: 600;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.input-group .input-group-prepend,
+.input-group .input-group-append {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.input-group .input-group-prepend button,
+.input-group .input-group-append button {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+}
+
+.col-6 {
+    flex: 1 1 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 576px) {
+    .col-6 {
+        flex: 1 1 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .text-center h2 {
+        font-size: 1.5rem;
+    }
+
+    .text-center h3 {
+        font-size: 1.2rem;
+    }
+
+    .text-center p {
+        font-size: 0.9rem;
+    }
+
+    .form-group .col-form-label {
+        font-size: 0.9rem;
+        text-align: left;
+    }
+
+    .input-group-prepend button, 
+    .input-group-append button {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    #video-url, #start, #duration, #end {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    .custom-file-label, .custom-file-input {
+        font-size: 0.9rem;
+    }
 }

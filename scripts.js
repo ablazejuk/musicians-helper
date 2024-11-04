@@ -69,9 +69,9 @@ function onPlayerStateChange(event) {
         
         if (videoChanged) {
             duration = player.getDuration();
-            $duration.val(duration);
+            $duration.val(duration.toFixed(1));
             $('#start').val(0);
-            $('#end').val(duration);
+            $('#end').val(duration.toFixed(1));
             videoChanged = false;
         }
         
@@ -182,18 +182,18 @@ $('#start').change( function () {
     
     if (start > duration) {
         start = duration;
-        $this.val(duration);
+        $this.val(duration.toFixed(1));
     }
 
     let duration_value = $('#duration').val();
 
     if (parseFloat(start) + parseFloat(duration_value) > duration) {
         let new_duration = duration - start;
-        $('#duration').val(duration - start);
+        $('#duration').val((duration - start).toFixed(1));
         duration_value = new_duration;
     }
     
-    $('#end').val(parseFloat(start) + parseFloat(duration_value));
+    $('#end').val((parseFloat(start) + parseFloat(duration_value)).toFixed(1));
 
     applyChanges(duration_value)
 });
@@ -206,10 +206,10 @@ $('#duration').change( function () {
     if (new_end > duration) {
         new_end = duration;
         new_duration = new_end - start;
-        $(this).val(new_duration);
+        $(this).val(new_duration.toFixed(1));
     }
 
-    $('#end').val(new_end);
+    $('#end').val(new_end.toFixed(1));
 
     applyChanges(new_duration)
 });
@@ -219,7 +219,7 @@ $('#end').change( function () {
 
     if (parseFloat(new_end) > duration) {
         new_end = duration;
-        $(this).val(duration);
+        $(this).val(duration.toFixed(1));
     }
 
     let new_duration = new_end - $('#start').val();
@@ -229,7 +229,7 @@ $('#end').change( function () {
         new_duration = 0;
     }
 
-    $duration.val(new_duration);
+    $duration.val(new_duration.toFixed(1));
     $duration.trigger('change');
 });
 
