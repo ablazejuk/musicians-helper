@@ -19,9 +19,23 @@ function getVideoIdFromURL(url) {
 }
 
 function onYouTubeIframeAPIReady() {
+    const screenWidth = window.innerWidth;
+    let playerWidth, playerHeight;
+
+    if (screenWidth >= 1200) {
+        playerWidth = 640;
+        playerHeight = 360;
+    } else if (screenWidth >= 768) {
+        playerWidth = 480;
+        playerHeight = 270;
+    } else {
+        playerWidth = 320;
+        playerHeight = 180;
+    }
+
     player = new YT.Player('player', {
-        height: '360',
-        width: '640',
+        height: playerHeight.toString(),
+        width: playerWidth.toString(),
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
