@@ -33,7 +33,7 @@ function onYouTubeIframeAPIReady() {
         playerHeight = 180;
     }
 
-    player = new YT.Player('player', {
+    player = new YT.Player(getPlayerId(), {
         height: playerHeight.toString(),
         width: playerWidth.toString(),
         events: {
@@ -117,7 +117,7 @@ function reset() {
     player.stopVideo();
     $('#duration').val('');
     $('#start').val('');
-    $('#player').hide();
+    getJQueryPlayer().hide();
 }
 
 function processFile(file_contents) {
@@ -182,7 +182,7 @@ $('#video-url').change( function () {
             reset();
             $this.addClass('is-invalid');
         } else {
-            $('#player').show();
+            getJQueryPlayer().show();
             $this.removeClass('is-invalid');
             player.loadVideoById(video_id);
             videoChanged = true;
@@ -288,6 +288,14 @@ function handleFile() {
     });
     
     reader.readAsText(fileList[0]);
+}
+
+function getPlayerId() {
+    return 'player';
+}
+
+function getJQueryPlayer() {
+    return $('#' + getPlayerId());
 }
 
 $(document).ready(function () {

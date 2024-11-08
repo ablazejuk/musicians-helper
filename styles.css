@@ -107,3 +107,11 @@
         font-size: 2rem;
     }
 }
+
+@media (min-width: 768px) {
+    .sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+    }
+}
