@@ -63,7 +63,9 @@ function registerScrollEvent() {
 
     scroll_event_id = setTimeout(function () {
         $('#' + (node_index-1)).removeClass('current-node');
-        $('#' + node_index).get(0).scrollIntoView();
+        $('#' + node_index).get(0).scrollIntoView({
+            block: "center"
+        });
         $('#' + node_index).addClass('current-node');
 
         registerScrollEvent();
@@ -291,7 +293,8 @@ function handleFile() {
 }
 
 function getPlayerId() {
-    return 'player';
+    const isMobile = window.innerWidth <= 768;
+    return isMobile ? 'mobile-player' : 'desktop-player';
 }
 
 function getJQueryPlayer() {
