@@ -128,6 +128,11 @@ function processFile(file_contents) {
     let row_object = {};
 
     rows.forEach(function (row, index) {
+        if (row.startsWith('#')) {
+            processMetadata(row);
+            return;
+        }
+
         element_row_index++
 
         switch (element_row_index) {
@@ -169,7 +174,7 @@ function processFile(file_contents) {
     seekToStart();
 }
 
-$('#video-url').change( function () {
+$('#video-url').change(function () {
     let $this = $(this);
 
     clearInterval(interval_id);
@@ -307,3 +312,19 @@ $(document).ready(function () {
     const inputElement = document.getElementById("chords-file");
     inputElement.addEventListener("change", handleFile, false);
 });
+
+function processMetadata(row) {
+    const content = row.slice(1);
+    const separatorIndex = content.indexOf(":");
+
+    if (separatorIndex === -1) {
+        return;
+    }
+
+    const key = content.slice(0, separatorIndex).trim();
+    const value = content.slice(separatorIndex + 1).trim();
+
+    if (key === 'URL') {
+        $('#video-url').val(value).change();
+    }
+}
