@@ -12,6 +12,7 @@ let videoChanged = false;
 let duration = null;
 let node_index = 0;
 let rows_dictionary = {};
+const MAX_CHARS_PER_LINE = 36;
 
 function getVideoIdFromURL(url) {
     const urlParams = new URLSearchParams((new URL(url)).search);
@@ -126,6 +127,7 @@ function processFile(file_contents) {
     let rows = file_contents.split(/\r?\n/);
     let element_row_index = 0;
     let row_object = {};
+    const errors = [];
 
     rows.forEach(function (row, index) {
         if (row.startsWith('#')) {
@@ -143,9 +145,17 @@ function processFile(file_contents) {
                 [row_object.start, row_object.end] = row.split(' --> ');
                 break;
             case 3:
+                if (reachedMaxCharsPerLine(row)) {
+                    errors.push(getReachedMaxCharsPerLineMessage(index, row));
+                }
+
                 row_object.chords = row;
                 break;
             case 4:
+                if (reachedMaxCharsPerLine(row)) {
+                    errors.push(getReachedMaxCharsPerLineMessage(index, row));
+                }
+
                 row_object.lyrics = row;
                 break;
             default:
@@ -169,6 +179,10 @@ function processFile(file_contents) {
         lyrics_node.className = "lyrics";
         lyrics_node.appendChild(document.createTextNode(row_object.lyrics));
         row_node.appendChild(lyrics_node);
+    }
+
+    if (errors) {
+        alert(errors);
     }
 
     seekToStart();
@@ -327,4 +341,14 @@ function processMetadata(row) {
     if (key === 'URL') {
         $('#video-url').val(value).change();
     }
+}
+
+function reachedMaxCharsPerLine(line) {
+    return line.length > MAX_CHARS_PER_LINE;
+}
+
+function getReachedMaxCharsPerLineMessage(index, line) {
+    return "Lines shouldn't have more than " + MAX_CHARS_PER_LINE + 
+    " characters for better visualization in mobile devices." + " " + 
+    "Line " + (index + 1) + " is " + line.length + " characters long.\n";
 }
