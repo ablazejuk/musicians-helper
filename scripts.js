@@ -145,17 +145,11 @@ function processFile(file_contents) {
                 [row_object.start, row_object.end] = row.split(' --> ');
                 break;
             case 3:
-                if (reachedMaxCharsPerLine(row)) {
-                    errors.push(getReachedMaxCharsPerLineMessage(index, row));
-                }
-
+                validateMaxCharsPerLine(errors, row, index);
                 row_object.chords = row;
                 break;
             case 4:
-                if (reachedMaxCharsPerLine(row)) {
-                    errors.push(getReachedMaxCharsPerLineMessage(index, row));
-                }
-
+                validateMaxCharsPerLine(errors, row, index);
                 row_object.lyrics = row;
                 break;
             default:
@@ -182,7 +176,7 @@ function processFile(file_contents) {
     }
 
     if (errors) {
-        alert(errors);
+        alert(errors.join('\n'));
     }
 
     seekToStart();
@@ -343,12 +337,21 @@ function processMetadata(row) {
     }
 }
 
+function validateMaxCharsPerLine(errors, line, index) {
+    if (errors.length === 0) {
+        errors.push("Lines shouldn't have more than " + MAX_CHARS_PER_LINE + 
+            " characters for better visualization in mobile devices:\n")
+    }
+
+    if (reachedMaxCharsPerLine(line)) {
+        errors.push(getReachedMaxCharsPerLineMessage(index, line));
+    }
+}
+
 function reachedMaxCharsPerLine(line) {
     return line.length > MAX_CHARS_PER_LINE;
 }
 
 function getReachedMaxCharsPerLineMessage(index, line) {
-    return "Lines shouldn't have more than " + MAX_CHARS_PER_LINE + 
-    " characters for better visualization in mobile devices." + " " + 
-    "Line " + (index + 1) + " is " + line.length + " characters long.\n";
+    return "Line " + (index + 1) + " is " + line.length + " characters long.";
 }
