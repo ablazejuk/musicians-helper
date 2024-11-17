@@ -17,114 +17,128 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="text-center py-3">
-            <h2>Musicians' Helper - Repeater</h2>
-            <p>Insert a YouTube URL and set loop points to repeat sections of a song.</p>
+    <nav>
+        <div class="nav nav-tabs justify-content-end" role="tablist">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#repeater" type="button" role="tab">Repeater</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#editor" type="button" role="tab">Editor</button>
         </div>
+    </nav>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="repeater">
+            <div class="container-fluid">
+                <div class="text-center py-3">
+                    <h2>Musicians' Helper - Repeater</h2>
+                    <p>Insert a YouTube URL and set loop points to repeat sections of a song.</p>
+                </div>
+                
+                <div class="row">
+                    <!-- Video URL and Controls Column -->
+                    <div class="col-md-6 col-sm-12">
+                        <form>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="chords-file">Chords File (.srt)</label>
+                                <div class="col-md-8">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="chords-file">
+                                        <label class="custom-file-label" for="chords-file">Choose File</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="video-url">Video URL</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <input id="video-url" class="form-control" name="video-url" type="text" placeholder="https://...">
+                                    <div id="url-invalid" class="invalid-feedback">
+                                        Invalid URL. Insert a valid YouTube URL.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Loop Start Control -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="start">Start <span class="text-muted">(s)</span></label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10</button>
+                                            <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1</button>
+                                            <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-0.1</button>
+                                        </div>
+                                        <input id="start" class="form-control" name="start" type="number" min="0" step=".1" placeholder="16.2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+0.1</button>
+                                            <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1</button>
+                                            <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
         
-        <div class="row">
-            <!-- Video URL and Controls Column -->
-            <div class="col-md-6 col-sm-12">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label" for="chords-file">Chords File (.srt)</label>
-                        <div class="col-md-8">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="chords-file">
-                                <label class="custom-file-label" for="chords-file">Choose File</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label" for="video-url">Video URL</label>
-                        <div class="col-md-8 col-sm-12">
-                            <input id="video-url" class="form-control" name="video-url" type="text" placeholder="https://...">
-                            <div id="url-invalid" class="invalid-feedback">
-                                Invalid URL. Insert a valid YouTube URL.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Loop Start Control -->
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label" for="start">Start <span class="text-muted">(s)</span></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10</button>
-                                    <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1</button>
-                                    <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-0.1</button>
-                                </div>
-                                <input id="start" class="form-control" name="start" type="number" min="0" step=".1" placeholder="16.2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+0.1</button>
-                                    <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1</button>
-                                    <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10</button>
+                            <!-- Loop Duration Control -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="duration">Duration <span class="text-muted">(s)</span></label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10</button>
+                                            <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1</button>
+                                            <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-0.1</button>
+                                        </div>
+                                        <input id="duration" class="form-control" name="duration" type="number" min="0" step=".1" placeholder="42.8">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+0.1</button>
+                                            <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1</button>
+                                            <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Loop Duration Control -->
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label" for="duration">Duration <span class="text-muted">(s)</span></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10</button>
-                                    <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1</button>
-                                    <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-0.1</button>
-                                </div>
-                                <input id="duration" class="form-control" name="duration" type="number" min="0" step=".1" placeholder="42.8">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+0.1</button>
-                                    <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1</button>
-                                    <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Loop End Control -->
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label" for="end">End <span class="text-muted">(s)</span></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10</button>
-                                    <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1</button>
-                                    <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-0.1</button>
-                                </div>
-                                <input id="end" class="form-control" name="end" type="number" min="0" step=".1" placeholder="42.8">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+0.1</button>
-                                    <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1</button>
-                                    <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10</button>
+        
+                            <!-- Loop End Control -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="end">End <span class="text-muted">(s)</span></label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary subtract" data-amount="10" type="button">-10</button>
+                                            <button class="btn btn-outline-secondary subtract" data-amount="1" type="button">-1</button>
+                                            <button class="btn btn-outline-secondary subtract" data-amount="0.1" type="button">-0.1</button>
+                                        </div>
+                                        <input id="end" class="form-control" name="end" type="number" min="0" step=".1" placeholder="42.8">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary sum" data-amount="0.1" type="button">+0.1</button>
+                                            <button class="btn btn-outline-secondary sum" data-amount="1" type="button">+1</button>
+                                            <button class="btn btn-outline-secondary sum" data-amount="10" type="button">+10</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+        
+                        <!-- Mobile Video Player -->
+                        <div class="sticky text-center">
+                            <div id="mobile-player" style="display:none"></div>
+                        </div>
+        
+                        <div id="chords"></div>
+                    </div>
+        
+                    <!-- Desktop Video Player Column -->
+                    <div class="col-md-6 col-sm-12 text-center">
+                        <div class="sticky">
+                            <div id="desktop-player" style="display:none"></div>
                         </div>
                     </div>
-                </form>
-
-                <!-- Mobile Video Player -->
-                <div class="sticky text-center">
-                    <div id="mobile-player" style="display:none"></div>
-                </div>
-
-                <div id="chords"></div>
-            </div>
-
-            <!-- Desktop Video Player Column -->
-            <div class="col-md-6 col-sm-12 text-center">
-                <div class="sticky">
-                    <div id="desktop-player" style="display:none"></div>
                 </div>
             </div>
+        </div>
+        <div class="tab-pane fade" id="editor">
+          Lyrics content here...
         </div>
     </div>
-
+    
     <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
