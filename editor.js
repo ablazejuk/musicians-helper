@@ -73,5 +73,25 @@ function insertEmptyLineAtIndex(fileContent, index) {
         outputFileContentArray.push(updatedLine);
     });
 
-    console.log(outputFileContentArray);
+    const filename = getFilenameWithoutExtension(selectedFile.name) + ' (new).srt';
+    exportToSrtFile(filename, outputFileContentArray)
+}
+
+function exportToSrtFile(filename, fileContentArray) {
+    const fileContent = fileContentArray.join('\n');
+    const blob = new Blob([fileContent], { type: 'text/plain' });
+    const link = document.createElement('a');
+    
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    
+    document.body.appendChild(link);
+    link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+
+function getFilenameWithoutExtension(filename) {
+    return filename.substring(0, filename.lastIndexOf('.')) || filename;
 }
