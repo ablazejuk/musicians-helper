@@ -175,7 +175,7 @@ function processFile(file_contents) {
         row_node.appendChild(lyrics_node);
     }
 
-    if (errors) {
+    if (errors.length > 0) {
         alert(errors.join('\n'));
     }
 
@@ -338,12 +338,12 @@ function processMetadata(row) {
 }
 
 function validateMaxCharsPerLine(errors, line, index) {
-    if (errors.length === 0) {
-        errors.push("Lines shouldn't have more than " + MAX_CHARS_PER_LINE + 
-            " characters for better visualization in mobile devices:\n")
-    }
-
     if (reachedMaxCharsPerLine(line)) {
+        if (errors.length === 0) {
+            errors.push("Lines shouldn't have more than " + MAX_CHARS_PER_LINE + 
+                " characters for better visualization in mobile devices:\n")
+        }
+
         errors.push(getReachedMaxCharsPerLineMessage(index, line));
     }
 }
