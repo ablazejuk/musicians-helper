@@ -19,6 +19,12 @@
     margin-top: 1rem;
 }
 
+@media (min-width: 768px) {
+    #chords {
+        padding: 20px;
+    }
+}
+
 #chords p {
     margin-left: 1em;
 }
