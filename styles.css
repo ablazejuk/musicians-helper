@@ -120,6 +120,10 @@
     z-index: 1030;
 }
 
+#mobile-player {
+    margin-top: 20px;
+}
+
 form {
     padding: 20px;
     border: 1px solid #ccc;
